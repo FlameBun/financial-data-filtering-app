@@ -15,6 +15,6 @@ export default function Header() {
 
 function HeaderCell({ children }) {
   return (
-    <th className="border border-black text-left p-2">{children}</th>
+    <th className="border border-black text-left p-2 w-1/6">{children}</th>
   );
 }

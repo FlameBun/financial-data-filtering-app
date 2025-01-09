@@ -22,8 +22,8 @@ function App() {
 
   return (
     <div className="w-11/12 mx-auto">
-      <h1>Financial Data Filtering App</h1>
-      <table className="w-full border border-black border-collapse">
+      <h1 className="font-bold text-2xl my-4">Financial Data Filtering App</h1>
+      <table className="w-full border border-black border-collapse shadow-md">
         <Header />
         <Body statements={statements} />
       </table>
