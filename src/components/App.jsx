@@ -4,9 +4,6 @@ import reactLogo from "../assets/react.svg";
 import Header from "./Header.jsx";
 import Body from "./Body.jsx";
 
-const endpoint = "https://financialmodelingprep.com/api/v3/income-statement/" +
-                 "AAPL?period=annual&apikey=fTgVXQhJUpJsXRASah2oN04eSmjWeEth";
-
 function App() {
   const [ statements, setStatements ] = useState([]);
 
@@ -14,7 +11,7 @@ function App() {
    * Retrieve annual income statements for AAPL.
    */
   async function setup() {
-    const { data } = await axios.get(endpoint);
+    const { data } = await axios.get("http://localhost:8000/statements");
     setStatements(data);
   }
 
