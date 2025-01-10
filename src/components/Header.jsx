@@ -1,9 +1,11 @@
 import { useState } from "react";
+import axios from "axios";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
+import getBaseURL from "../base-url";
 
-export default function Header() {
+export default function Header({ setStatements }) {
   const [ sortOption, setSortOption ] = useState({
     column: "Date",
     order: "descending"
@@ -13,17 +15,29 @@ export default function Header() {
     <thead>
       <tr>
         <HeaderCell>
-          <SortableHeader sortOption={sortOption} setSortOption={setSortOption}>
+          <SortableHeader
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            setStatements={setStatements}
+          >
             Date
           </SortableHeader>
         </HeaderCell>
         <HeaderCell>
-          <SortableHeader sortOption={sortOption} setSortOption={setSortOption}>
+          <SortableHeader
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            setStatements={setStatements}
+          >
             Revenue
           </SortableHeader>
         </HeaderCell>
         <HeaderCell>
-          <SortableHeader sortOption={sortOption} setSortOption={setSortOption}>
+          <SortableHeader
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+            setStatements={setStatements}
+          >
             Net Income
           </SortableHeader>
         </HeaderCell>
@@ -56,30 +70,42 @@ function HeaderCell({ children }) {
 }
 
 const iconStyle = "inline-block ml-1 cursor-pointer";
-function SortableHeader({ children, sortOption, setSortOption }) {
-  const { column, order } = sortOption;
+function SortableHeader({
+  children,
+  sortOption,
+  setSortOption,
+  setStatements
+}) {
+  const currColumn = children; // Header name (name of this column)
 
   /**
    * Toggle the sort button for the next specified column to sort to descending
    * or ascending after it has been clicked on.
    */
-  function handleColumnSort(nextColumn) {
-    return (function() {
-      if (column === nextColumn && order === "descending")
-        setSortOption({ column: nextColumn, order: "ascending" });
-      else
-        setSortOption({ column: nextColumn, order: "descending" });
-    });
+  async function handleColumnSort() {
+    let statements;
+
+    if (sortOption.column === currColumn && sortOption.order === "descending") {
+      const res = await axios.get(`${getBaseURL()}/statements?` +
+                                  `sort=${currColumn.toLowerCase()}&` +
+                                  `order=ascending`);
+      statements = res.data;
+      setSortOption({ column: currColumn, order: "ascending" });
+    } else {
+      const res = await axios.get(`${getBaseURL()}/statements?` +
+                                  `sort=${currColumn.toLowerCase()}&` +
+                                  `order=descending`);
+      statements = res.data;
+      setSortOption({ column: currColumn, order: "descending" });
+    }
+
+    setStatements(statements);
   }
 
   // Determine which column is sorted and which sort icon to display
   let icon;
-  if (
-    (children === "Date" && column === "Date") ||
-    (children === "Revenue" && column === "Revenue") ||
-    (children === "Net Income" && column === "Net Income")
-  ) {
-    if (order === "descending")
+  if (currColumn === sortOption.column) {
+    if (sortOption.order === "descending")
       icon = <TiArrowSortedDown className={iconStyle} />;
     else
       icon = <TiArrowSortedUp className={iconStyle} />;
@@ -90,9 +116,9 @@ function SortableHeader({ children, sortOption, setSortOption }) {
   return (
     <div 
       className="flex items-center p-2 cursor-pointer"
-      onClick={handleColumnSort(children)}
+      onClick={handleColumnSort}
     >
-      <span>{children}</span>
+      <span>{currColumn}</span>
       {icon}
     </div>
   );
