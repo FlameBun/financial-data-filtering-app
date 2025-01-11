@@ -1,16 +1,10 @@
-import { useState } from "react";
 import axios from "axios";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
 import getBaseURL from "../base-url";
 
-export default function Header({ setStatements }) {
-  const [ sortOption, setSortOption ] = useState({
-    column: "Date",
-    order: "descending"
-  });
-
+export default function Header({ sortOption, setSortOption, setStatements }) {
   return (
     <thead>
       <tr>
