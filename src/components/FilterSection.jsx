@@ -14,38 +14,34 @@ export default function FilterSection() {
 const inputStyle = "font-noto-sans placeholder-gray-500 p-2 rounded-md min-w-0";
 function Filter({ children }) {
   const [ inputs, setInputs ] = useState({ from: "", to: "" });
-
   const column = children; // Name of column to filter by
 
-  function handleStartInputChange(event) {
+  /**
+   * Update the inputs state whenever the user types into an input field.
+   */
+  function handleInputChange(event, inputType) {
     let inputStr = event.target.value;
 
+    // Prevent user from inputting more than four characters for Date fields
     if (column === "Date (Year)" && inputStr.length > 4)
       return;
 
-    if (column == "Date (Year)")
+    /**
+     * Allow the user to type only digits for all of the fields. If the inputs
+     * are fields for Revenue or Net Income, allow the user to type '-' in case
+     * they want to filter by ranges including negative values as well.
+     */
+    if (column === "Date (Year)")
       inputStr = inputStr.replace(/[^0-9]/, "");
     else
       inputStr = inputStr.replace(/[^0-9-]/, "");
 
-    setInputs({ ...inputs, from: inputStr });
-  }
-
-  function handleEndInputChange(event) {
-    let inputStr = event.target.value;
-
-    if (column === "Date (Year)" && inputStr.length > 4)
-      return;
-
-    if (column == "Date (Year)")
-      inputStr = inputStr.replace(/[^0-9]/, "");
+    // Change "From" or "To" field
+    if (inputType === "from")
+      setInputs({ ...inputs, from: inputStr });
     else
-      inputStr = inputStr.replace(/[^0-9-]/, "");
-
-    setInputs({ ...inputs, to: inputStr });
+      setInputs({ ...inputs, to: inputStr });
   }
-
-  
 
   let startPlaceholder = "From";
   let endPlaceholder = "To";
@@ -63,13 +59,13 @@ function Filter({ children }) {
         <input 
           placeholder={startPlaceholder}
           value={inputs.from}
-          onChange={handleStartInputChange}
+          onChange={(event) => handleInputChange(event, "from")}
           className={inputStyle}
         />
         <input
           placeholder={endPlaceholder}
           value={inputs.to}
-          onChange={handleEndInputChange}
+          onChange={(event) => handleInputChange(event, "to")}
           className={inputStyle}
         />
       </div>
