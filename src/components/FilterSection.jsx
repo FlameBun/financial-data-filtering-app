@@ -240,7 +240,7 @@ export default function FilterSection({
       </Filter>
       <button
         onClick={handleFilterClick}
-        className="bg-[#edd0ad] rounded-lg px-4 py-1 my-7"
+        className="bg-[#dbd0c3] rounded-lg px-4 py-1 my-7"
       >
         Filter
       </button>
