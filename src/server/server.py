@@ -30,7 +30,7 @@ async def get_statements(sort: str, order: str):
                             statement["revenue"])
         else:
             statements.sort(key=lambda statement: statement["revenue"])
-    else:
+    else: # Net Income
         if order == "descending":
             statements.sort(reverse=True, key=lambda statement:
                             statement["netIncome"])

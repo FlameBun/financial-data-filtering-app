@@ -8,15 +8,19 @@ import getBaseURL from "../base-url.jsx";
 
 function App() {
   const [ statements, setStatements ] = useState([]);
+  
   const [ filter, setFilter ] = useState({
     year: [],
     revenue: [],
     netIncome: []
   });
+
+  // Indicates which column is currently sorted and in which order it's sorted
   const [ sortOption, setSortOption ] = useState({
-    column: "Date",
+    column: "date",
     order: "descending"
   });
+
   console.log(statements);
 
   /**
@@ -44,7 +48,11 @@ function App() {
         />
         <Body statements={statements} />
       </table>
-      <FilterSection />
+      <FilterSection
+        setStatements={setStatements}
+        setFilter={setFilter}
+        sortOption={sortOption}
+      />
     </div>
   );
 }

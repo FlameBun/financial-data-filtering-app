@@ -70,7 +70,8 @@ function SortableHeader({
   setSortOption,
   setStatements
 }) {
-  const currColumn = children; // Header name (name of this column)
+  // Header name (name of this column) in lowercase
+  const currColumn = children.toLowerCase();
 
   /**
    * Toggle the sort button for the next specified column to sort to descending
@@ -79,15 +80,18 @@ function SortableHeader({
   async function handleColumnSort() {
     let statements;
 
+    // Replace spaces, if there are any, with '-'
+    const sortQueryParamVal = currColumn.replace(/\s/g, "-");
+
     if (sortOption.column === currColumn && sortOption.order === "descending") {
       const res = await axios.get(`${getBaseURL()}/statements?` +
-                                  `sort=${currColumn.toLowerCase()}&` +
+                                  `sort=${sortQueryParamVal}&` +
                                   `order=ascending`);
       statements = res.data;
       setSortOption({ column: currColumn, order: "ascending" });
     } else {
       const res = await axios.get(`${getBaseURL()}/statements?` +
-                                  `sort=${currColumn.toLowerCase()}&` +
+                                  `sort=${sortQueryParamVal}&` +
                                   `order=descending`);
       statements = res.data;
       setSortOption({ column: currColumn, order: "descending" });
@@ -112,7 +116,7 @@ function SortableHeader({
       className="flex items-center p-2 cursor-pointer"
       onClick={handleColumnSort}
     >
-      <span>{currColumn}</span>
+      <span>{children}</span>
       {icon}
     </div>
   );
