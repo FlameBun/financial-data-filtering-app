@@ -44,6 +44,7 @@ function App() {
       <table className="w-full border border-black border-collapse shadow-md">
         <Header
           setStatements={setStatements}
+          filter={filter}
           sortOption={sortOption}
           setSortOption={setSortOption}
         />

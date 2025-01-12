@@ -4,12 +4,18 @@ import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
 import getBaseURL from "../base-url.jsx";
 
-export default function Header({ sortOption, setSortOption, setStatements }) {
+export default function Header({
+  filter,
+  sortOption,
+  setSortOption,
+  setStatements
+}) {
   return (
     <thead>
       <tr>
         <HeaderCell>
           <SortableHeader
+            filter={filter}
             sortOption={sortOption}
             setSortOption={setSortOption}
             setStatements={setStatements}
@@ -19,6 +25,7 @@ export default function Header({ sortOption, setSortOption, setStatements }) {
         </HeaderCell>
         <HeaderCell>
           <SortableHeader
+            filter={filter}
             sortOption={sortOption}
             setSortOption={setSortOption}
             setStatements={setStatements}
@@ -28,6 +35,7 @@ export default function Header({ sortOption, setSortOption, setStatements }) {
         </HeaderCell>
         <HeaderCell>
           <SortableHeader
+            filter={filter}
             sortOption={sortOption}
             setSortOption={setSortOption}
             setStatements={setStatements}
@@ -66,6 +74,7 @@ function HeaderCell({ children }) {
 const iconStyle = "inline-block ml-1 cursor-pointer";
 function SortableHeader({
   children,
+  filter,
   sortOption,
   setSortOption,
   setStatements
@@ -83,17 +92,30 @@ function SortableHeader({
     // Replace spaces, if there are any, with '-'
     const sortQueryParamVal = currColumn.replace(/\s/g, "-");
 
+    // Construct URL
+    let url = `${getBaseURL()}/statements?sort=${sortQueryParamVal}`;
+
+    // Append query parameters for year, revenue, and net income to URL if
+    // applicable
+    if (filter.year.length !== 0)
+      url += `&year=${filter.year[0]},${filter.year[1]}`;
+    if (filter.revenue.length !== 0)
+      url += `&revenue=${filter.revenue[0]},${filter.revenue[1]}`;
+    if (filter.netIncome.length !== 0)
+      url += `&net-income=${filter.netIncome[0]},${filter.netIncome[1]}`;
+
+    // Set the sort option for this current column
     if (sortOption.column === currColumn && sortOption.order === "descending") {
-      const res = await axios.get(`${getBaseURL()}/statements?` +
-                                  `sort=${sortQueryParamVal}&` +
-                                  `order=ascending`);
-      statements = res.data;
+      url += `&order=ascending`;
+      const { data } = await axios.get(url);
+      statements = data;
+
       setSortOption({ column: currColumn, order: "ascending" });
     } else {
-      const res = await axios.get(`${getBaseURL()}/statements?` +
-                                  `sort=${sortQueryParamVal}&` +
-                                  `order=descending`);
-      statements = res.data;
+      url += `&order=descending`;
+      const { data } = await axios.get(url);
+      statements = data;
+
       setSortOption({ column: currColumn, order: "descending" });
     }
 
