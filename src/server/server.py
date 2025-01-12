@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 from datetime import datetime
@@ -10,13 +10,68 @@ endpoint = "https://financialmodelingprep.com/api/v3/income-statement/AAPL?" \
 # Run CORS middleware
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"])
 
-# Retrieve all AAPL income statements from API endpoint
+# Retrieve the AAPL income statements from the API endpoint sorted and filtered
+# according to the options specified in the query parameters
 @app.get("/statements")
-async def get_statements(sort: str, order: str):
+async def get_statements(
+    sort: str,
+    order: str,
+    year: str | None = None,
+    revenue: str | None = None,
+    net_income: str = Query(None, alias="net-income")
+):
+    # Retrieve all AAPL income statements from API endpoint
     async with httpx.AsyncClient() as client:
         res = await client.get(endpoint)
         statements = res.json()
-    
+
+    # Filter by year if query parameter for it was specified
+    if year != None:
+        # Extract years from query parameter
+        years = year.split(',')
+        years[0] = int(years[0])
+        years[1] = int(years[1])
+
+        # Filter statements by year between years[0] and years[1]
+        newStatements = []
+        for statement in statements:
+            statementYr = datetime.strptime(statement["date"], "%Y-%m-%d").year
+            if statementYr >= years[0] and statementYr <= years[1]:
+                newStatements.append(statement)
+        statements = newStatements
+
+    # Filter by revenue if query parameter for it was specified
+    if revenue != None:
+        # Extract revenues from query parameter
+        revenues = revenue.split(',')
+        revenues[0] = int(revenues[0])
+        revenues[1] = int(revenues[1])
+
+        # Filter statements by revenue between revenues[0] and revenues[1]
+        newStatements = []
+        for statement in statements:
+            statementRev = statement["revenue"]
+            if statementRev >= revenues[0] and statementRev <= revenues[1]:
+                newStatements.append(statement)
+        statements = newStatements
+
+    # Filter by net income if query parameter for it was specified
+    if net_income != None:
+        # Extract net incomes from query parameter
+        net_incomes = net_income.split(",")
+        net_incomes[0] = int(net_incomes[0])
+        net_incomes[1] = int(net_incomes[1])
+
+        # Filter statements by net income between net_incomes[0] and
+        # net_incomes[1]
+        newStatements = []
+        for statement in statements:
+            statement_net_inc = statement["netIncome"]
+            if statement_net_inc >= net_incomes[0] and statement_net_inc <= net_incomes[1]:
+                newStatements.append(statement)
+        statements = newStatements
+
+    # Sort by specified column
     if sort == "date":
         if order == "descending":
             statements.sort(reverse=True, key=lambda statement:

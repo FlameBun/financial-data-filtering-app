@@ -8,7 +8,8 @@ import getBaseURL from "../base-url.jsx";
 
 function App() {
   const [ statements, setStatements ] = useState([]);
-  
+
+  // Indicates which filters are currently set on the table
   const [ filter, setFilter ] = useState({
     year: [],
     revenue: [],

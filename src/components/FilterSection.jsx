@@ -1,5 +1,7 @@
 import { useState } from "react";
+import axios from "axios";
 import { MdErrorOutline } from "react-icons/md";
+import getBaseURL from "../base-url.jsx";
 
 export default function FilterSection({
   setStatements,
@@ -92,26 +94,21 @@ export default function FilterSection({
     let revenueError = "";
     let netIncomeError = "";
 
-    // Replace spaces, if there are any, with '-' in sortOption.column
-    const sortQueryParamVal = sortOption.column.replace(/\s/g, "-");
-
     // Query parameters
-    let yearQueryParam;
-    let revenueQueryParam;
-    let netIncomeQueryParam;
+    let yearQueryParam = "";
+    let revenueQueryParam = "";
+    let netIncomeQueryParam = "";
 
     // If date fields are valid, set yearQueryParam; else, set error
     if (dateFrom !== "" && dateTo !== "") {
-      if (Number(dateFrom) > Number(dateTo)) {
+      // Invalid inputs are not valid numbers or if "From" field is greater than
+      // "To" field
+      if (Number(dateFrom) > Number(dateTo))
         dateError = "Invalid range. Write the smaller value before the " +
                     "larger value.";
-      } else {
-        dateError = "";
+      else
         yearQueryParam = `year=${dateFrom},${dateTo}`;
-      }
-    } else if (dateFrom === "" && dateTo === "") {
-      yearQueryParam = "";
-    } else {
+    } else if (dateFrom !== "" || dateTo !== "") {
       dateError = "Fill in both fields or leave both empty.";
     }
 
@@ -129,9 +126,7 @@ export default function FilterSection({
                        "larger value.";
       else
         revenueQueryParam = `revenue=${revenueFrom},${revenueTo}`;
-    } else if (revenueFrom === "" && revenueTo === "") {
-      revenueQueryParam = "";
-    } else {
+    } else if (revenueFrom !== "" || revenueTo !== "") {
       revenueError = "Fill in both fields or leave both empty.";
     }
 
@@ -149,9 +144,7 @@ export default function FilterSection({
                          "larger value.";
       else
         netIncomeQueryParam = `net-income=${netIncomeFrom},${netIncomeTo}`;
-    } else if (netIncomeFrom === "" && netIncomeTo === "") {
-      netIncomeQueryParam = "";
-    } else {
+    } else if (netIncomeFrom !== "" || netIncomeTo !== "") {
       netIncomeError = "Fill in both fields or leave both empty.";
     }
 
@@ -165,11 +158,61 @@ export default function FilterSection({
     if (dateError !== "" || revenueError !== "" || netIncomeError !== "")
       return;
 
-    // Generate GET request HERE
-    // const res = await axios.get(`${getBaseURL()}/statements?` +
-    //                               `sort=${sortQueryParamVal}&` +
-    //                               `order=ascending&` +
-    //                               `year=${dateFrom},${dateTo}`);
+    // Replace spaces, if there are any, with '-' in sortOption.column
+    const sortQueryParamVal = sortOption.column.replace(/\s/g, "-");
+
+    // Construct URL
+    let url = `${getBaseURL()}/statements?sort=${sortQueryParamVal}&` +
+                `order=${sortOption.order}`;
+
+    // Append query parameters for year to URL and set filter if applicable
+    if (yearQueryParam !== "") {
+      url += `&${yearQueryParam}`;
+
+      setFilter((filter) => ({
+        ...filter,
+        year: [Number(dateFrom), Number(dateTo)]
+      }));
+    } else {
+      setFilter((filter) => ({
+        ...filter,
+        year: []
+      }));
+    }
+
+    // Append query parameters for revenue to URL and set filter if applicable
+    if (revenueQueryParam !== "") {
+      url += `&${revenueQueryParam}`;
+
+      setFilter((filter) => ({
+        ...filter,
+        revenue: [Number(revenueFrom), Number(revenueTo)]
+      }));
+    } else {
+      setFilter((filter) => ({
+        ...filter,
+        revenue: []
+      }));
+    }
+
+    // Append query params for net income to URL and set filter if applicable
+    if (netIncomeQueryParam !== "") {
+      url += `&${netIncomeQueryParam}`;
+
+      setFilter((filter) => ({
+        ...filter,
+        netIncome: [Number(netIncomeFrom), Number(netIncomeTo)]
+      }));
+    } else {
+      setFilter((filter) => ({
+        ...filter,
+        netIncome: []
+      }));
+    }
+
+    // Generate GET request and set statements on table
+    const { data } = await axios.get(url);
+    setStatements(data);
   }
 
   return (

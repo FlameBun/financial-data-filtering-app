@@ -2,7 +2,7 @@ import axios from "axios";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
-import getBaseURL from "../base-url";
+import getBaseURL from "../base-url.jsx";
 
 export default function Header({ sortOption, setSortOption, setStatements }) {
   return (
