@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import reactLogo from "../assets/react.svg";
 import Header from "./Header.jsx";
 import Body from "./Body.jsx";
 import FilterSection from "./FilterSection.jsx";
