@@ -12,7 +12,7 @@ export default function Header({
 }) {
   return (
     <thead>
-      <tr>
+      <tr className="bg-[#dbd0c3]">
         <HeaderCell>
           <SortableHeader
             filter={filter}
