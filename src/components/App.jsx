@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Header from "./Header.jsx";
 import Body from "./Body.jsx";
+import TableCaption from "./TableCaption.jsx";
 import FilterSection from "./FilterSection.jsx";
 import getBaseURL from "../base-url.jsx";
 
@@ -51,6 +52,7 @@ function App() {
           <Body statements={statements} />
         </table>
       </div>
+      <TableCaption filter={filter} />
       <FilterSection
         setStatements={setStatements}
         setFilter={setFilter}
