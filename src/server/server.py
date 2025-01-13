@@ -33,12 +33,12 @@ async def get_statements(
         years[1] = int(years[1])
 
         # Filter statements by year between years[0] and years[1]
-        newStatements = []
+        new_statements = []
         for statement in statements:
-            statementYr = datetime.strptime(statement["date"], "%Y-%m-%d").year
-            if statementYr >= years[0] and statementYr <= years[1]:
-                newStatements.append(statement)
-        statements = newStatements
+            statement_yr = datetime.strptime(statement["date"], "%Y-%m-%d").year
+            if statement_yr >= years[0] and statement_yr <= years[1]:
+                new_statements.append(statement)
+        statements = new_statements
 
     # Filter by revenue if query parameter for it was specified
     if revenue != None:
@@ -48,12 +48,12 @@ async def get_statements(
         revenues[1] = int(revenues[1])
 
         # Filter statements by revenue between revenues[0] and revenues[1]
-        newStatements = []
+        new_statements = []
         for statement in statements:
-            statementRev = statement["revenue"]
-            if statementRev >= revenues[0] and statementRev <= revenues[1]:
-                newStatements.append(statement)
-        statements = newStatements
+            statement_rev = statement["revenue"]
+            if statement_rev >= revenues[0] and statement_rev <= revenues[1]:
+                new_statements.append(statement)
+        statements = new_statements
 
     # Filter by net income if query parameter for it was specified
     if net_income != None:
@@ -64,12 +64,12 @@ async def get_statements(
 
         # Filter statements by net income between net_incomes[0] and
         # net_incomes[1]
-        newStatements = []
+        new_statements = []
         for statement in statements:
             statement_net_inc = statement["netIncome"]
             if statement_net_inc >= net_incomes[0] and statement_net_inc <= net_incomes[1]:
-                newStatements.append(statement)
-        statements = newStatements
+                new_statements.append(statement)
+        statements = new_statements
 
     # Sort by specified column
     if sort == "date":
