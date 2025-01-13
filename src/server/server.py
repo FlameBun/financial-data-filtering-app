@@ -8,7 +8,7 @@ endpoint = "https://financialmodelingprep.com/api/v3/income-statement/AAPL?" \
            "period=annual&apikey=TWFlofp1OpY7HbvxrR2L9CZNhDzHDY1i"
 
 # Run CORS middleware
-app.add_middleware(CORSMiddleware, allow_origins=["https://financial-data-filtering-app-theta.vercel.app/"])
+app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"])
 
 # Retrieve the AAPL income statements from the API endpoint sorted and filtered
 # according to the options specified in the query parameters
