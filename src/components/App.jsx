@@ -22,8 +22,6 @@ function App() {
     order: "descending"
   });
 
-  console.log(statements);
-
   /**
    * Retrieve annual income statements for AAPL.
    */
