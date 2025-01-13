@@ -254,7 +254,7 @@ function Filter({ children, inputs, setInputs, error }) {
   const column = children; // Name of column to filter by
 
   return (
-    <div className="min-w-0">
+    <div className="grow min-w-0">
       <h2 className="font-bold w-fit mb-[0.125rem]">{column}</h2>
       <div className="flex gap-x-1">
         <input 
