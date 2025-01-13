@@ -71,7 +71,7 @@ function HeaderCell({ children }) {
   );
 }
 
-const iconStyle = "inline-block ml-1 cursor-pointer";
+const iconStyle = "shrink-0 inline-block ml-1 cursor-pointer";
 function SortableHeader({
   children,
   filter,
