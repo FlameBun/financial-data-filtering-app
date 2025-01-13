@@ -216,46 +216,47 @@ export default function FilterSection({
   }
 
   return (
-    <div className="flex my-4 gap-x-4 items-start">
-      <Filter
-        inputs={[dateFrom, dateTo]}
-        setInputs={handleDateInputChange}
-        error={errors.date}
+    <>
+      <div
+        className="flex my-4 lg:flex-row lg:items-start gap-x-4 flex-col
+        items-stretch gap-y-2"
       >
-        {"Date (Year)"}
-      </Filter>
-      <Filter
-        inputs={[revenueFrom, revenueTo]}
-        setInputs={handleRevenueInputChange}
-        error={errors.revenue}
-      >
-        Revenue
-      </Filter>
-      <Filter
-        inputs={[netIncomeFrom, netIncomeTo]}
-        setInputs={handleNetIncomeInputChange}
-        error={errors.netIncome}
-      >
-        Net Income
-      </Filter>
-      <button
-        onClick={handleFilterClick}
-        className="bg-[#dbd0c3] rounded-lg px-4 py-1 my-7"
-      >
-        Filter
-      </button>
-    </div>
+        <Filter
+          inputs={[dateFrom, dateTo]}
+          setInputs={handleDateInputChange}
+          error={errors.date}
+        >
+          {"Date (Year)"}
+        </Filter>
+        <Filter
+          inputs={[revenueFrom, revenueTo]}
+          setInputs={handleRevenueInputChange}
+          error={errors.revenue}
+        >
+          Revenue
+        </Filter>
+        <Filter
+          inputs={[netIncomeFrom, netIncomeTo]}
+          setInputs={handleNetIncomeInputChange}
+          error={errors.netIncome}
+        >
+          Net Income
+        </Filter>
+        <FilterButton display="inline" onFilterClick={handleFilterClick} />
+      </div>
+      <FilterButton display="block" onFilterClick={handleFilterClick} />
+    </>
   );
 }
 
-const inputStyle = "font-noto-sans placeholder-gray-500 p-2 rounded-md min-w-0";
+const inputStyle = "grow min-w-0 font-noto-sans placeholder-gray-500 p-2 rounded-md";
 function Filter({ children, inputs, setInputs, error }) {
   const column = children; // Name of column to filter by
 
   return (
     <div className="min-w-0">
-      <h2 className="font-bold w-fit">{column}</h2>
-      <div className="flex gap-x-1 my-1">
+      <h2 className="font-bold w-fit mb-[0.125rem]">{column}</h2>
+      <div className="flex gap-x-1">
         <input 
           placeholder="From"
           value={inputs[0]}
@@ -278,5 +279,25 @@ function Filter({ children, inputs, setInputs, error }) {
         </div>
       }
     </div>
+  );
+}
+
+/**
+ * The FilterButton component will be displayed as a flex item that is inline
+ * with the rest of the Filter components or displayed as a block below the 
+ * Filter components, depending on the size of the screen.
+ */
+const buttonBaseStyle = "bg-[#c9c5b1] rounded-lg px-5 py-1";
+function FilterButton({ display, onFilterClick }) {
+  let buttonStyle;
+  if (display === "inline")
+    buttonStyle = `${buttonBaseStyle} mt-7 hidden lg:block`;
+  else // (display === "block")
+    buttonStyle = `${buttonBaseStyle} block lg:hidden`;
+
+  return (
+    <button onClick={onFilterClick} className={buttonStyle}>
+      Filter
+    </button>
   );
 }

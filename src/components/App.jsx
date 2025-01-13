@@ -38,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <div className="font-noto-sans w-11/12 mx-auto">
+    <div className="font-noto-sans w-11/12 my-4 mx-auto">
       <h1 className="font-bold text-2xl my-4">Financial Data Filtering App</h1>
       <div className="scrollbar overflow-x-auto">
         <table className="w-full border border-black border-collapse shadow-md">
