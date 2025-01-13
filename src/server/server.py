@@ -16,8 +16,8 @@ app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173"])
 async def get_statements(
     sort: str,
     order: str,
-    year: str | None = None,
-    revenue: str | None = None,
+    year: str = Query(None),
+    revenue: str = Query(None),
     net_income: str = Query(None, alias="net-income")
 ):
     # Retrieve all AAPL income statements from API endpoint
