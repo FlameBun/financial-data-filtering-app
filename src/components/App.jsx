@@ -40,15 +40,17 @@ function App() {
   return (
     <div className="font-noto-sans w-11/12 mx-auto">
       <h1 className="font-bold text-2xl my-4">Financial Data Filtering App</h1>
-      <table className="w-full border border-black border-collapse shadow-md">
-        <Header
-          setStatements={setStatements}
-          filter={filter}
-          sortOption={sortOption}
-          setSortOption={setSortOption}
-        />
-        <Body statements={statements} />
-      </table>
+      <div className="scrollbar overflow-x-auto">
+        <table className="w-full border border-black border-collapse shadow-md">
+          <Header
+            setStatements={setStatements}
+            filter={filter}
+            sortOption={sortOption}
+            setSortOption={setSortOption}
+          />
+          <Body statements={statements} />
+        </table>
+      </div>
       <FilterSection
         setStatements={setStatements}
         setFilter={setFilter}

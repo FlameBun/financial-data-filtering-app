@@ -2,8 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    background-color: #F1E5D6;
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    @apply w-4 h-3;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-[#c9c5b1]
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-[#787569];
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#4f4d46];
   }
 }
