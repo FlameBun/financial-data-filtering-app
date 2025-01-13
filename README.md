@@ -13,5 +13,5 @@ My financial data filtering app fetches Apple's annual income statements from a 
 ## Note
 Make sure the frontend and web server are hosted at `http://localhost:5173` and `http://localhost:8000` respectively; if not, the frontend will not be able to correctly fetch data from the web server.
 
-## Note
-Main App Link: https://financial-data-filtering-app-theta.vercel.app/
+## Deployed App Link
+https://financial-data-filtering-app-theta.vercel.app/
