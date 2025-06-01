@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { MdErrorOutline } from "react-icons/md";
 import getBaseURL from "../base-url.jsx";
+import { StatementContext } from "../StatementContext.jsx";
 
-export default function FilterSection({
-  setStatements,
-  setFilter,
-  sortOption
-}) {
+export default function FilterSection() {
+  const { setStatements, setFilter, sortOption } = useContext(StatementContext);
+
   const [ inputs, setInputs ] = useState({
     dateFrom: "",
     dateTo: "",

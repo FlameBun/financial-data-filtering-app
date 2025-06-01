@@ -1,4 +1,9 @@
-export default function Body({ statements }) {
+import { useContext } from "react";
+import { StatementContext } from "../StatementContext.jsx";
+
+export default function Body() {
+  const statements = useContext(StatementContext).statements;
+
   const rows = statements.map((statement) => {
     const { date, revenue, netIncome, grossProfit, eps, operatingIncome }
       = statement;

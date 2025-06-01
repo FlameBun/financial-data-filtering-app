@@ -5,8 +5,9 @@ import Body from "./Body.jsx";
 import TableCaption from "./TableCaption.jsx";
 import FilterSection from "./FilterSection.jsx";
 import getBaseURL from "../base-url.jsx";
+import { StatementContext } from "../StatementContext.jsx";
 
-function App() {
+export default function App() {
   const [ statements, setStatements ] = useState([]);
 
   // Indicates which filters are currently set on the table
@@ -37,27 +38,36 @@ function App() {
   }, []);
 
   return (
+    <Main>
+      <StatementContext.Provider value={{statements, setStatements, filter, setFilter, sortOption, setSortOption}}>
+        <h1 className="font-bold text-2xl my-4">
+          Financial Data Filtering App
+        </h1>
+        <TableContainer>
+          <table className="w-full border border-black border-collapse">
+            <Header />
+            <Body />
+          </table>
+        </TableContainer>
+        <TableCaption />
+        <FilterSection/>
+      </StatementContext.Provider>
+    </Main>
+  );
+}
+
+function Main({ children }) {
+  return (
     <div className="font-noto-sans w-11/12 my-4 mx-auto">
-      <h1 className="font-bold text-2xl my-4">Financial Data Filtering App</h1>
-      <div className="scrollbar overflow-x-auto">
-        <table className="w-full border border-black border-collapse shadow-md">
-          <Header
-            setStatements={setStatements}
-            filter={filter}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-          />
-          <Body statements={statements} />
-        </table>
-      </div>
-      <TableCaption filter={filter} />
-      <FilterSection
-        setStatements={setStatements}
-        setFilter={setFilter}
-        sortOption={sortOption}
-      />
+      {children}
     </div>
   );
 }
 
-export default App;
+function TableContainer({ children }) {
+  return (
+    <div className="scrollbar overflow-x-auto shadow-md">
+      {children}
+    </div>
+  );
+}

@@ -1,10 +1,14 @@
 import { LuDot } from "react-icons/lu";
+import { useContext } from "react";
+import { StatementContext } from "../StatementContext.jsx";
 
 /**
  * Display the filters currently active as a caption of the table. Each filter
  * will be separated by a separator.
  */
-export default function TableCaption({ filter }) {
+export default function TableCaption() {
+  const { filter } = useContext(StatementContext);
+
   const filterArr = [];
 
   if (filter.year.length !== 0) {

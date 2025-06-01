@@ -2,44 +2,26 @@ import axios from "axios";
 import { TiArrowUnsorted } from "react-icons/ti";
 import { TiArrowSortedDown } from "react-icons/ti";
 import { TiArrowSortedUp } from "react-icons/ti";
+import { useContext } from "react";
+import { StatementContext } from "../StatementContext.jsx";
 import getBaseURL from "../base-url.jsx";
 
-export default function Header({
-  filter,
-  sortOption,
-  setSortOption,
-  setStatements
-}) {
+export default function Header() {
   return (
     <thead>
       <tr className="bg-[#dbd0c3]">
         <HeaderCell>
-          <SortableHeader
-            filter={filter}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-            setStatements={setStatements}
-          >
+          <SortableHeader>
             Date
           </SortableHeader>
         </HeaderCell>
         <HeaderCell>
-          <SortableHeader
-            filter={filter}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-            setStatements={setStatements}
-          >
+          <SortableHeader>
             Revenue
           </SortableHeader>
         </HeaderCell>
         <HeaderCell>
-          <SortableHeader
-            filter={filter}
-            sortOption={sortOption}
-            setSortOption={setSortOption}
-            setStatements={setStatements}
-          >
+          <SortableHeader>
             Net Income
           </SortableHeader>
         </HeaderCell>
@@ -72,13 +54,9 @@ function HeaderCell({ children }) {
 }
 
 const iconStyle = "shrink-0 inline-block ml-1 cursor-pointer";
-function SortableHeader({
-  children,
-  filter,
-  sortOption,
-  setSortOption,
-  setStatements
-}) {
+function SortableHeader({ children }) {
+  const { filter, sortOption, setSortOption, setStatements } = useContext(StatementContext);
+
   // Header name (name of this column) in lowercase
   const currColumn = children.toLowerCase();
 
@@ -138,7 +116,7 @@ function SortableHeader({
       className="flex items-center p-2 cursor-pointer"
       onClick={handleColumnSort}
     >
-      <span>{children}</span>
+      <div>{children}</div>
       {icon}
     </div>
   );
